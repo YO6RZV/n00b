@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# User input for target system IP address
+read -p "Introdu adresa IP a serverului pe care doresti sa clonezi actualul sistem de operare: " target_ip
+
+# Function to display confirmation prompt
+confirm() {
+  read -r -p "Esti sigur ca doresti sa continui (y/n)? " response
+  case $response in
+    [yY][eE][sS]|[yY]) 
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+# Confirmation prompt for starting the process
+if confirm; then
+  echo "Incepe procesul de clonare..."
+else
+  echo "Procesul de clonare a fost abandonat."
+  exit 1
+fi
+
+# Perform the rsync operation
+rsync -avz --exclude={/boot,/dev,/tmp,/sys,/proc,/backup,/etc/fstab,/etc/mtab,/etc/mdadm.conf} / source_user@$target_ip:/
+
+if [ $? -eq 0 ]; then
+  echo "Clonarea a avut loc cu success."
+else
+  echo "Clonarea a esuat. Verifica comanda rSYNC si re-incearca. Contacteaza YO6RZV."
+fi
