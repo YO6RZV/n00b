@@ -3,6 +3,9 @@
 # User input for target system IP address
 read -p "Introdu adresa IP a serverului pe care doresti sa clonezi actualul sistem de operare: " target_ip
 
+# User input for source username
+read -p "Introdu numele de utilizator pentru conexiunea la serverul sursa: " source_user
+
 # Function to display confirmation prompt
 confirm() {
   read -r -p "Esti sigur ca doresti sa continui (y/n)? " response
@@ -25,7 +28,7 @@ else
 fi
 
 # Perform the rsync operation
-rsync -avz --exclude={/boot,/dev,/tmp,/sys,/proc,/backup,/etc/fstab,/etc/mtab,/etc/mdadm.conf} / source_user@$target_ip:/
+rsync -avz --exclude={/boot,/dev,/tmp,/sys,/proc,/backup,/etc/fstab,/etc/mtab,/etc/mdadm.conf} / "$source_user"@"$target_ip":/
 
 if [ $? -eq 0 ]; then
   echo "Clonarea a avut loc cu success."
