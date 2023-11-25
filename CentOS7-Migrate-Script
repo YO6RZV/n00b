@@ -27,8 +27,11 @@ else
   exit 1
 fi
 
-# Perform the rsync operation
-rsync -avz --exclude={/boot,/dev,/tmp,/sys,/proc,/backup,/etc/fstab,/etc/mtab,/etc/mdadm.conf} / "$source_user"@"$target_ip":/
+# Specify the full path to rsync on the remote server
+RSYNC_REMOTE_PATH="/path/to/rsync"
+
+# Perform the rsync operation with progress message
+"$RSYNC_REMOTE_PATH" -avz --exclude={/boot,/dev,/tmp,/sys,/proc,/backup,/etc/fstab,/etc/mtab,/etc/mdadm.conf} --info=progress2 --human-readable --inplace / "$source_user"@"$target_ip":/
 
 if [ $? -eq 0 ]; then
   echo "Clonarea a avut loc cu success."
